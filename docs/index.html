@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Asistente Ley 29090 — Motor + Checklist (v0.4)</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#111;--muted:#566;--bdr:#e6e8ee;--shadow:0 1px 3px rgba(0,0,0,.08);--r:14px;}
+*{box-sizing:border-box}
+body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);}
+header{background:#0f172a;color:#fff;padding:16px 20px;}
+header h1{font-size:18px;margin:0;}
+header .muted{opacity:.85;font-size:12px;margin-top:4px;}
+.wrap{max-width:1200px;margin:18px auto;padding:0 14px;}
+.row{display:grid;grid-template-columns:420px 1fr;gap:14px;align-items:start;}
+@media (max-width:1020px){.row{grid-template-columns:1fr;}}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;border:1px solid var(--bdr);}
+.muted{color:#556;font-size:12px;}
+label{display:block;font-size:12px;margin:10px 0 6px;color:#111;}
+input[type="number"],select{width:100%;padding:10px;border:1px solid #d6d8dd;border-radius:12px;background:#fff;}
+.check{display:flex;gap:10px;align-items:center;margin-top:10px;}
+.check input{transform:scale(1.1);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:560px){.grid2{grid-template-columns:1fr;}}
+.badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px;border:1px solid var(--bdr);background:#f1f5ff;color:#1e2a78;}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.actions button{border:1px solid var(--bdr);background:#fff;border-radius:12px;padding:8px 10px;font-weight:600;cursor:pointer}
+.actions button:hover{background:#f7f8fb}
+hr{border:none;border-top:1px solid #eee;margin:12px 0;}
+h3{margin:10px 0 8px;font-size:13px;}
+ul{margin:0;padding-left:18px;}
+pre{background:#0b1020;color:#e7ebff;padding:12px;border-radius:12px;overflow:auto;font-size:12px;}
+details{margin-top:10px;}
+details.src summary{font-weight:700}
+a{color:#1a2b8a;text-decoration:none;} a:hover{text-decoration:underline;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:#f3f5f9;border:1px solid var(--bdr);padding:2px 6px;border-radius:10px;}
+.card.out-exento{border-left:6px solid #16a34a;}
+.card.out-a{border-left:6px solid #2563eb;}
+.card.out-b{border-left:6px solid #7c3aed;}
+.card.out-c{border-left:6px solid #f59e0b;}
+.card.out-d{border-left:6px solid #ef4444;}
+.card.out-indet{border-left:6px solid #64748b;}
+.blocktitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.blocktitle .t{font-weight:800;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#0f172a;}
+.ckwrap{margin-top:14px;}
+#ck_summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.ckpill{border:1px solid var(--bdr);background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;}
+.ckmod{border:1px solid var(--bdr);border-radius:12px;padding:12px;margin:10px 0;background:#fff;}
+.ckmod h3{margin:0 0 10px 0;}
+.ckgroup{padding:10px;border-radius:12px;border:1px dashed #dbe0ea;margin-top:10px;}
+.ckgtitle{font-weight:800;font-size:12px;margin-bottom:8px;color:#0f172a;}
+.cklist{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+.ckitem{border:1px solid var(--bdr);border-radius:12px;padding:8px 10px;background:#fff;}
+.ckitem.req{border-style:solid;}
+.ckitem.done{background:#f0fdf4;border-color:#86efac;}
+.ckrow{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.ckrow input{margin-top:2px}
+.cktext{font-size:13px;line-height:1.25}
+.tag{margin-left:auto;font-size:11px;font-weight:800;border:1px solid var(--bdr);padding:2px 8px;border-radius:999px;background:#fff;}
+.tag.ghost{opacity:.55}
+.footerNote{font-size:12px;color:#556;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Asistente Ley 29090 — Motor de decisión + Checklist (MVP v0.4)</h1>
+  <div class="muted">Clasifica (Exento / A–D / HU) + muestra ruta + genera checklist por módulos + exporta JSON. Listo para GitHub Pages.</div>
+</header>
+
+<div class="wrap">
+  <div class="row">
+
+    <div class="card">
+      <div class="blocktitle"><div class="t">Entrada</div></div>
+
+      <label>Casos de prueba</label><select id="casos"></select>
+
+      <label>Ámbito</label>
+      <select id="scope">
+        <option value="edificacion">Edificación</option>
+        <option value="habilitacion_urbana">Habilitación Urbana</option>
+      </select>
+
+      <div class="grid2">
+        <div class="check"><input id="es_patrimonio_cultural" type="checkbox"/><label for="es_patrimonio_cultural" style="margin:0">¿Predio es Patrimonio Cultural?</label></div>
+        <div class="check"><input id="regimen_propiedad_exclusiva_y_comun" type="checkbox"/><label for="regimen_propiedad_exclusiva_y_comun" style="margin:0">¿Régimen PEX/PC?</label></div>
+      </div>
+
+      <div class="grid2">
+        <div class="check"><input id="es_programa_bfh_reubicacion" type="checkbox"/><label for="es_programa_bfh_reubicacion" style="margin:0">¿Programa BFH reubicación?</label></div>
+        <div class="check"><input id="es_proyecto_inversion_publica_app_concesion_servicios_publicos" type="checkbox"/><label for="es_proyecto_inversion_publica_app_concesion_servicios_publicos" style="margin:0">¿Inversión pública / APP / concesión (servicios públicos)?</label></div>
+      </div>
+
+      <div id="grupo_edif">
+        <hr/>
+        <label>Tipo de intervención</label>
+        <select id="tipo_intervencion">
+          <option value="">(selecciona)</option>
+          <option value="obra_nueva">Obra nueva</option>
+          <option value="ampliacion">Ampliación</option>
+          <option value="remodelacion">Remodelación</option>
+          <option value="obra_menor">Obra menor</option>
+          <option value="cerco">Cerco</option>
+          <option value="demolicion_total">Demolición total</option>
+          <option value="demolicion_parcial">Demolición parcial</option>
+          <option value="instalacion_temporal">Instalación temporal</option>
+          <option value="cambio_uso">Cambio de uso</option>
+        </select>
+
+        <label>Uso principal</label>
+        <select id="uso_principal">
+          <option value="">(selecciona)</option>
+          <option value="vivienda_unifamiliar">Vivienda unifamiliar</option>
+          <option value="vivienda_multifamiliar">Vivienda multifamiliar</option>
+          <option value="condominio">Condominio</option>
+          <option value="uso_mixto_con_vivienda">Uso mixto con vivienda</option>
+          <option value="oficina">Oficina</option>
+          <option value="comercio">Comercio</option>
+          <option value="cultural_diversion_espectaculo">Cultural / diversión / espectáculos</option>
+          <option value="mercado">Mercado</option>
+          <option value="deportivo_espectaculo">Espectáculo deportivo</option>
+          <option value="industria">Industria</option>
+          <option value="educativo">Educativo</option>
+          <option value="salud">Salud</option>
+          <option value="hospedaje">Hospedaje</option>
+          <option value="combustible">Expendio de combustibles</option>
+          <option value="terminal_transporte">Terminal de transporte</option>
+          <option value="otros">Otros</option>
+        </select>
+
+        <div class="grid2">
+          <div><label>Pisos</label><input id="pisos" type="number" min="0" step="1" placeholder="Ej. 5"/></div>
+          <div><label>Área techada (m²)</label><input id="area_techada_m2" type="number" min="0" step="1" placeholder="Ej. 2800"/></div>
+        </div>
+
+        <label>Área total resultante (m²) — solo ampliación vivienda unifamiliar</label>
+        <input id="area_total_resultante_m2" type="number" min="0" step="1" placeholder="Ej. 190"/>
+
+        <div class="grid2">
+          <div class="check"><input id="incluye_sotano_o_semisotano" type="checkbox"/><label for="incluye_sotano_o_semisotano" style="margin:0">¿Incluye sótano/semisótano?</label></div>
+          <div class="check"><input id="colinda_con_edificacion_existente" type="checkbox"/><label for="colinda_con_edificacion_existente" style="margin:0">¿Colinda con edificación existente?</label></div>
+        </div>
+
+        <div class="grid2">
+          <div><label>Profundidad excavación (m)</label><input id="profundidad_excavacion_m" type="number" min="0" step="0.01" placeholder="Ej. 1.80"/></div>
+          <div class="check"><input id="usa_explosivos" type="checkbox"/><label for="usa_explosivos" style="margin:0">¿Usa explosivos (demolición)?</label></div>
+        </div>
+
+        <div class="grid2">
+          <div class="check"><input id="modificacion_estructural" type="checkbox"/><label for="modificacion_estructural" style="margin:0">¿Modificación estructural?</label></div>
+          <div class="check"><input id="aumento_area_techada" type="checkbox"/><label for="aumento_area_techada" style="margin:0">¿Aumento de área techada?</label></div>
+        </div>
+
+        <div class="check"><input id="cambio_uso" type="checkbox"/><label for="cambio_uso" style="margin:0">¿Cambio de uso?</label></div>
+
+        <div class="grid2">
+          <div><label>Longitud cerco (m)</label><input id="longitud_cerco_m" type="number" min="0" step="0.1" placeholder="Ej. 25"/></div>
+          <div><label>Ocupantes (solo espectáculos deportivos)</label><input id="ocupantes" type="number" min="0" step="1" placeholder="Ej. 18000"/></div>
+        </div>
+      </div>
+
+      <div id="grupo_hu" style="display:none">
+        <hr/>
+        <label>Uso predial</label>
+        <select id="uso_predial">
+          <option value="">(selecciona)</option>
+          <option value="residencial">Residencial</option>
+          <option value="industria_comercio_ou">Industria / Comercio / OU</option>
+          <option value="mixto">Mixto</option>
+          <option value="otros">Otros</option>
+        </select>
+
+        <label>Área predial (ha)</label><input id="area_predial_ha" type="number" min="0" step="0.01" placeholder="Ej. 4.5"/>
+
+        <div class="grid2">
+          <div class="check"><input id="es_isla_rustica" type="checkbox"/><label for="es_isla_rustica" style="margin:0">¿Isla rústica?</label></div>
+          <div class="check"><input id="conforma_lote_unico" type="checkbox"/><label for="conforma_lote_unico" style="margin:0">¿Lote único?</label></div>
+        </div>
+
+        <div class="check"><input id="afecto_plan_vial_provincial_metropolitano" type="checkbox"/><label for="afecto_plan_vial_provincial_metropolitano" style="margin:0">¿Afecto a Plan Vial Prov/Met?</label></div>
+
+        <div class="grid2">
+          <div class="check"><input id="por_etapas_proyecto_integral" type="checkbox"/><label for="por_etapas_proyecto_integral" style="margin:0">¿Por etapas (proyecto integral)?</label></div>
+          <div class="check"><input id="construccion_simultanea" type="checkbox"/><label for="construccion_simultanea" style="margin:0">¿Construcción simultánea?</label></div>
+        </div>
+
+        <div class="grid2">
+          <div class="check"><input id="solicita_venta_garantizada_lotes" type="checkbox"/><label for="solicita_venta_garantizada_lotes" style="margin:0">¿Venta garantizada de lotes?</label></div>
+          <div class="check"><input id="vende_viviendas_edificadas" type="checkbox"/><label for="vende_viviendas_edificadas" style="margin:0">¿Venta de viviendas edificadas?</label></div>
+        </div>
+
+        <div class="grid2">
+          <div class="check"><input id="requiere_planeamiento_integral" type="checkbox"/><label for="requiere_planeamiento_integral" style="margin:0">¿Requiere planeamiento integral?</label></div>
+          <div class="check"><input id="colinda_con_zona_arqueologica_patrimonio_anp" type="checkbox"/><label for="colinda_con_zona_arqueologica_patrimonio_anp" style="margin:0">¿Colinda con zona arqueológica/Patrimonio/ANP?</label></div>
+        </div>
+
+        <div class="check"><input id="es_area_natural_protegida_o_zona_amortiguamiento_o_ecosistema_fragil" type="checkbox"/><label for="es_area_natural_protegida_o_zona_amortiguamiento_o_ecosistema_fragil" style="margin:0">¿ANP / zona amortiguamiento / ecosistema frágil?</label></div>
+
+        <label>Tipo de intervención (HU)</label>
+        <select id="hu_tipo_intervencion">
+          <option value="">(selecciona)</option>
+          <option value="modificacion_proyecto">Modificación de proyecto</option>
+        </select>
+      </div>
+
+      <hr/>
+      <details><summary>Entrada actual (JSON)</summary><pre id="input_dump"></pre></details>
+      <div class="footerNote">Nota: este MVP añade checklist modular para validación y ajuste.</div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="blocktitle"><div class="t">Salida</div></div>
+        <div id="resultado"></div>
+
+        <div class="ckwrap">
+          <div class="blocktitle">
+            <div class="t">Checklist</div>
+            <div id="ck_summary"></div>
+          </div>
+          <div id="checklist"></div>
+          <div class="footerNote">El checklist se guarda en tu navegador (localStorage) para que puedas marcar avances.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="blocktitle"><div class="t">Notas técnicas</div></div>
+        <ul>
+          <li>Diseño diferenciado por clasificación: Exento / A / B / C / D.</li>
+          <li>Checklist por módulos: BASE + suplementos (ej. Oficinas).</li>
+          <li>Exportación a JSON para auditoría y trazabilidad.</li>
+        </ul>
+        <div class="muted">Para GitHub Pages: Settings → Pages → Deploy from a branch → main → /docs</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
