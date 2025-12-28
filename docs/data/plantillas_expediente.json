@@ -1,0 +1,357 @@
+{
+  "metadata": {
+    "id": "plantillas_expediente_29090",
+    "version": "1.0.0",
+    "last_updated": "2025-12-28",
+    "notes": [
+      "Plantillas iniciales (MVP). Diseñadas para ampliarse con detalle de requisitos y cantidades mín/máx."
+    ]
+  },
+  "by_modalidad": {
+    "A": {
+      "title": "Expediente — Modalidad A",
+      "sections": [
+        {
+          "id": "S01",
+          "title": "Portada"
+        },
+        {
+          "id": "S02",
+          "title": "Ficha de datos (administrado / predio / profesionales)"
+        },
+        {
+          "id": "S03",
+          "title": "Determinación (Modalidad / Ruta / Alertas)"
+        },
+        {
+          "id": "S04",
+          "title": "Relación de documentos (anexos)"
+        }
+      ],
+      "doc_buckets": [
+        {
+          "id": "B1",
+          "title": "Formularios",
+          "items": [
+            {
+              "code": "A-FUE",
+              "name": "Formulario Único de Edificación (FUE) suscrito",
+              "qty_min": 1,
+              "qty_max": 1
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "title": "Documentación técnica",
+          "items": [
+            {
+              "code": "A-ARQ",
+              "name": "Planos básicos de arquitectura (según intervención)",
+              "qty_min": 1,
+              "qty_max": 3
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "title": "Legales",
+          "items": [
+            {
+              "code": "A-TIT",
+              "name": "Documento que acredita derecho sobre el predio",
+              "qty_min": 1,
+              "qty_max": 3
+            }
+          ]
+        }
+      ]
+    },
+    "B": {
+      "title": "Expediente — Modalidad B",
+      "sections": [
+        {
+          "id": "S01",
+          "title": "Portada"
+        },
+        {
+          "id": "S02",
+          "title": "Ficha de datos"
+        },
+        {
+          "id": "S03",
+          "title": "Determinación (Modalidad / Ruta / Alertas)"
+        },
+        {
+          "id": "S04",
+          "title": "Cuadro de especialidades"
+        },
+        {
+          "id": "S05",
+          "title": "Relación de documentos (anexos)"
+        }
+      ],
+      "doc_buckets": [
+        {
+          "id": "B1",
+          "title": "Formularios",
+          "items": [
+            {
+              "code": "B-FUE",
+              "name": "FUE suscrito + anexos",
+              "qty_min": 1,
+              "qty_max": 2
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "title": "Arquitectura",
+          "items": [
+            {
+              "code": "B-ARQ",
+              "name": "Planos de arquitectura completos",
+              "qty_min": 1,
+              "qty_max": 10
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "title": "Estructuras",
+          "items": [
+            {
+              "code": "B-EST",
+              "name": "Planos/memoria de estructuras (si aplica)",
+              "qty_min": 0,
+              "qty_max": 10
+            }
+          ]
+        },
+        {
+          "id": "B4",
+          "title": "Instalaciones",
+          "items": [
+            {
+              "code": "B-IES",
+              "name": "Planos IISS/IIEE (si aplica)",
+              "qty_min": 0,
+              "qty_max": 12
+            }
+          ]
+        }
+      ]
+    },
+    "C": {
+      "title": "Expediente — Modalidad C",
+      "sections": [
+        {
+          "id": "S01",
+          "title": "Portada"
+        },
+        {
+          "id": "S02",
+          "title": "Ficha de datos"
+        },
+        {
+          "id": "S03",
+          "title": "Determinación (Modalidad / Ruta / Alertas)"
+        },
+        {
+          "id": "S04",
+          "title": "Cuadro de especialidades + responsables"
+        },
+        {
+          "id": "S05",
+          "title": "Relación de documentos (anexos)"
+        },
+        {
+          "id": "S06",
+          "title": "Notas de compatibilidades (si aplica)"
+        }
+      ],
+      "doc_buckets": [
+        {
+          "id": "B1",
+          "title": "Formularios",
+          "items": [
+            {
+              "code": "C-FUE",
+              "name": "FUE suscrito",
+              "qty_min": 1,
+              "qty_max": 1
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "title": "Expediente técnico (base)",
+          "items": [
+            {
+              "code": "C-ARQ",
+              "name": "Arquitectura completa (planos + memoria)",
+              "qty_min": 1,
+              "qty_max": 15
+            },
+            {
+              "code": "C-EST",
+              "name": "Estructuras (planos + memoria/cálculo)",
+              "qty_min": 1,
+              "qty_max": 15
+            },
+            {
+              "code": "C-IES",
+              "name": "Instalaciones (IISS/IIEE) si aplica",
+              "qty_min": 0,
+              "qty_max": 20
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "title": "Seguridad / accesibilidad",
+          "items": [
+            {
+              "code": "C-SEG",
+              "name": "Sustento de seguridad/evacuación/accesibilidad (según RNE/uso)",
+              "qty_min": 1,
+              "qty_max": 5
+            }
+          ]
+        }
+      ]
+    },
+    "D": {
+      "title": "Expediente — Modalidad D",
+      "sections": [
+        {
+          "id": "S01",
+          "title": "Portada"
+        },
+        {
+          "id": "S02",
+          "title": "Ficha de datos"
+        },
+        {
+          "id": "S03",
+          "title": "Determinación (Modalidad / Ruta / Alertas)"
+        },
+        {
+          "id": "S04",
+          "title": "Cuadro de compatibilidades sectoriales"
+        },
+        {
+          "id": "S05",
+          "title": "Cuadro de especialidades + responsables"
+        },
+        {
+          "id": "S06",
+          "title": "Relación de documentos (anexos)"
+        }
+      ],
+      "doc_buckets": [
+        {
+          "id": "B1",
+          "title": "Formularios",
+          "items": [
+            {
+              "code": "D-FUE",
+              "name": "FUE suscrito",
+              "qty_min": 1,
+              "qty_max": 1
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "title": "Expediente técnico completo",
+          "items": [
+            {
+              "code": "D-ARQ",
+              "name": "Arquitectura completa",
+              "qty_min": 1,
+              "qty_max": 20
+            },
+            {
+              "code": "D-EST",
+              "name": "Estructuras completa",
+              "qty_min": 1,
+              "qty_max": 20
+            },
+            {
+              "code": "D-IES",
+              "name": "IISS/IIEE completas",
+              "qty_min": 1,
+              "qty_max": 25
+            },
+            {
+              "code": "D-ESP",
+              "name": "Especialidades adicionales (según giro)",
+              "qty_min": 0,
+              "qty_max": 30
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "title": "Compatibilidades",
+          "items": [
+            {
+              "code": "D-SECT",
+              "name": "Compatibilidades sectoriales exigibles",
+              "qty_min": 1,
+              "qty_max": 10
+            }
+          ]
+        }
+      ]
+    },
+    "HU": {
+      "title": "Expediente — Habilitación Urbana (HU)",
+      "sections": [
+        {
+          "id": "S01",
+          "title": "Portada"
+        },
+        {
+          "id": "S02",
+          "title": "Ficha de datos"
+        },
+        {
+          "id": "S03",
+          "title": "Determinación (Modalidad HU / Ruta / Alertas)"
+        },
+        {
+          "id": "S04",
+          "title": "Relación de documentos (anexos)"
+        }
+      ],
+      "doc_buckets": [
+        {
+          "id": "B1",
+          "title": "Formularios",
+          "items": [
+            {
+              "code": "HU-FUHU",
+              "name": "FUHU suscrito",
+              "qty_min": 1,
+              "qty_max": 1
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "title": "Proyecto HU",
+          "items": [
+            {
+              "code": "HU-PROY",
+              "name": "Planos/memorias de habilitación urbana",
+              "qty_min": 1,
+              "qty_max": 20
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

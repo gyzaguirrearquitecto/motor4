@@ -1,0 +1,25 @@
+{
+  "input": {
+    "scope": "edificacion",
+    "es_patrimonio_cultural": false,
+    "regimen_propiedad_exclusiva_y_comun": false,
+    "tipo_intervencion": "obra_nueva",
+    "uso_principal": "educativo",
+    "pisos": 2,
+    "area_techada_m2": 5000
+  },
+  "result": {
+    "outcome_type": "modalidad",
+    "modalidad": "D",
+    "procedimiento": "Evaluación previa",
+    "ruta": [
+      "Comisión Técnica (evaluación previa)"
+    ],
+    "alertas": [
+      "Verificar compatibilidades sectoriales y requisitos ITSE según giro."
+    ],
+    "rule_id": "EDIF-D-EDUCATIVO-BASE",
+    "rule_name": "D: educativo (base)"
+  },
+  "exported_at": "2025-12-27T00:00:00.000Z"
+}

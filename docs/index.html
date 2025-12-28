@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>EXP-29090 — Generador de Expediente (HTML/PDF)</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#111;--muted:#566;--bdr:#e6e8ee;--shadow:0 1px 3px rgba(0,0,0,.08);--r:14px;}
+*{box-sizing:border-box}
+body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);}
+header{background:#0f172a;color:#fff;padding:16px 20px;}
+header h1{font-size:18px;margin:0;}
+header .muted{opacity:.85;font-size:12px;margin-top:4px;}
+.wrap{max-width:1280px;margin:18px auto;padding:0 14px;}
+.row{display:grid;grid-template-columns:420px 1fr;gap:14px;align-items:start;}
+@media (max-width:1100px){.row{grid-template-columns:1fr;}}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;border:1px solid var(--bdr);}
+label{display:block;font-size:12px;margin:10px 0 6px;color:#111;}
+input[type="text"],input[type="date"],input[type="file"]{width:100%;padding:10px;border:1px solid #d6d8dd;border-radius:12px;background:#fff;}
+.small{font-size:12px;color:#556}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{border:1px solid var(--bdr);background:#fff;border-radius:12px;padding:9px 10px;font-weight:700;cursor:pointer}
+button:hover{background:#f7f8fb}
+button.primary{background:#0f172a;color:#fff;border-color:#0f172a}
+button.primary:hover{background:#111c3b}
+button.ghost{padding:0 10px;font-size:18px;line-height:1}
+.status{font-size:12px;color:#0f172a;font-weight:800}
+iframe{width:100%;height:76vh;border:1px solid var(--bdr);border-radius:12px;background:#fff}
+hr{border:none;border-top:1px solid #eee;margin:12px 0;}
+.arow{display:grid;grid-template-columns:90px 1fr 80px 1fr 42px;gap:8px;align-items:center;margin-top:8px}
+@media (max-width:720px){.arow{grid-template-columns:1fr 1fr;}}
+.arow input{padding:9px;border-radius:12px;border:1px solid #d6d8dd}
+.note{font-size:12px;color:#556;line-height:1.35}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:#f3f5f9;border:1px solid var(--bdr);padding:2px 6px;border-radius:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>EXP-29090 — Generador de Expediente (HTML + PDF)</h1>
+  <div class="muted">Importa el JSON del motor (ley29090_resultado.json), completa datos, y genera un expediente imprimible.</div>
+</header>
+
+<div class="wrap">
+  <div class="row">
+
+    <div class="card">
+      <div class="status" id="status">Sin motor importado.</div>
+
+      <hr/>
+      <label>1) Importar resultado del motor</label>
+      <input id="file_motor" type="file" accept=".json,application/json"/>
+      <div class="toolbar">
+        <button id="btn_example" type="button">Cargar ejemplo</button>
+      </div>
+      <div class="note">
+        Debes exportar desde el motor el archivo <code>ley29090_resultado.json</code> y subirlo aquí.
+      </div>
+
+      <hr/>
+      <label>2) Datos del expediente</label>
+      <label>Código / Nomenclatura</label>
+      <input id="codigo_expediente" type="text" placeholder="Ej. EXP-29090-IND-2025-001"/>
+
+      <label>Municipalidad</label>
+      <input id="municipalidad" type="text" placeholder="Ej. Municipalidad Distrital de ..."/>
+
+      <label>Fecha</label>
+      <input id="fecha" type="date"/>
+
+      <label>Administrado</label>
+      <input id="administrado" type="text" placeholder="Nombres y apellidos / Razón social"/>
+
+      <label>DNI / RUC</label>
+      <input id="doc_id" type="text" placeholder="Ej. 12345678 / 20123456789"/>
+
+      <label>Ubicación del predio</label>
+      <input id="ubicacion" type="text" placeholder="Dirección, distrito, provincia, departamento"/>
+
+      <label>Profesional responsable</label>
+      <input id="profesional" type="text" placeholder="Arq. ..."/>
+
+      <label>Colegiatura</label>
+      <input id="colegiatura" type="text" placeholder="CAP ..."/>
+
+      <label>Contacto (correo / teléfono)</label>
+      <input id="contacto" type="text" placeholder="correo@... / +51 ..."/>
+
+      <hr/>
+      <label>3) Anexos adicionales (opcional)</label>
+      <div class="note">Agrega documentos extra (p. ej., constancias, cartas, fotos, informes). Se listarán al final.</div>
+      <div id="anexos"></div>
+      <div class="toolbar">
+        <button id="btn_add_anexo" type="button">+ Agregar anexo</button>
+      </div>
+
+      <hr/>
+      <label>4) Salidas</label>
+      <div class="toolbar">
+        <button class="primary" id="btn_export_html" type="button">Descargar HTML</button>
+        <button id="btn_print_pdf" type="button">Imprimir / Guardar PDF</button>
+        <button id="btn_export_json" type="button">Descargar JSON</button>
+      </div>
+      <div class="note">
+        Para PDF: Chrome/Edge → Imprimir → Destino: <strong>Guardar como PDF</strong>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="status">Vista previa (imprimible)</div>
+      <iframe id="preview" title="preview"></iframe>
+      <div class="small" style="margin-top:10px">
+        Sugerencia: usa márgenes por defecto o "Ajustar a página" al imprimir.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
